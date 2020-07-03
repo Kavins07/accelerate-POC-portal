@@ -23,6 +23,10 @@ import MuiDialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import Input from '@material-ui/core/Input';
 import Chip from '@material-ui/core/Chip';
+import AccountCircleTwoToneIcon from '@material-ui/icons/AccountCircleTwoTone';
+import { Alert, AlertTitle } from '@material-ui/lab';
+
+
 
 
 export default function Header(props) {
@@ -42,7 +46,8 @@ export default function Header(props) {
     const [financialTypes, setFinancialTypes] = useState([]);
     const [selectedBusinessType, setSelectedBusinessType] = useState(["Company Secretary"]);
     const [selectedFinancialType, setselectedFinancialType] = useState(["Banking"]);
-    
+    const [openProfile, setopenProfile] = useState(false);
+
     const styles = (theme) => ({
         root: {
             margin: 0,
@@ -86,64 +91,48 @@ export default function Header(props) {
 
     const handleBussinessChange = (event) => {
         setSelectedBusinessType(event.target.value);
-        
+
         store.dispatch({
             type: FILTER_BY_BUSINESS_SERVICES,
             payload: event.target.value
         })
-      };
-    
-    const handleBussinessChangeMultiple = (event) => {
-        const { options } = event.target;
-        const value = [];
-        for (let i = 0, l = options.length; i < l; i += 1) {
-          if (options[i].selected) {
-            value.push(options[i].value);
-          }
-          
-        }
-        setSelectedBusinessType(value);
-    }
+    };
+
+    // const handleBussinessChangeMultiple = (event) => {
+    //     const { options } = event.target;
+    //     const value = [];
+    //     for (let i = 0, l = options.length; i < l; i += 1) {
+    //         if (options[i].selected) {
+    //             value.push(options[i].value);
+    //         }
+
+    //     }
+    //     setSelectedBusinessType(value);
+    // }
     const handleFinanceChange = (event) => {
         setselectedFinancialType(event.target.value);
         store.dispatch({
             type: FILTER_BY_BUSINESS_SERVICES,
             payload: event.target.value
         })
-      };
-    
-    const handleFinanceChangeMultiple = (event) => {
-        const { options } = event.target;
-        const value = [];
-        for (let i = 0, l = options.length; i < l; i += 1) {
-          if (options[i].selected) {
-            value.push(options[i].value);
-          }
-          setselectedFinancialType(value);
-        }
-        store.dispatch({
-            type: FILTER_BY_BUSINESS_SERVICES,
-            payload: value
-        })
-        
-    }
+    };
 
-    // const handleSelectedBusinessType = (e) => {
-    //     // setSelectedBusinessType(e.target.getAttribute('data-value'));
-    //     setSelectedBusinessType(prevArray => [...prevArray, e.target.getAttribute('data-value')])
+    // const handleFinanceChangeMultiple = (event) => {
+    //     const { options } = event.target;
+    //     const value = [];
+    //     for (let i = 0, l = options.length; i < l; i += 1) {
+    //         if (options[i].selected) {
+    //             value.push(options[i].value);
+    //         }
+    //         setselectedFinancialType(value);
+    //     }
     //     store.dispatch({
     //         type: FILTER_BY_BUSINESS_SERVICES,
-    //         payload: e.target.getAttribute('data-value')
+    //         payload: value
     //     })
+
     // }
 
-    // const handleSelectedFinancialType = (e) => {
-    //     setselectedFinancialType(prevArray => [...prevArray, e.target.getAttribute('data-value')])
-    //     store.dispatch({
-    //         type: FILTER_BY_FINANCIAL_SERVICES,
-    //         payload: e.target.getAttribute('data-value')
-    //     })
-    // }
 
     const DialogTitle = withStyles(styles)((props) => {
         const { children, classes, onClose, ...other } = props;
@@ -152,7 +141,6 @@ export default function Header(props) {
                 <Typography variant="h6">{children}</Typography>
                 {onClose ? (
                     <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
-                        {/* <CloseIcon /> */}
                     </IconButton>
                 ) : null}
             </MuiDialogTitle>
@@ -185,6 +173,12 @@ export default function Header(props) {
         if (history.location.pathname !== '/login' || '/register') {
             setIsLoggedIn(true);
         }
+        if (localStorage.getItem("userProfile")) {
+            setopenProfile(true);
+        }
+        if (localStorage.getItem("providerProfile")) {
+            setopenProfile(true);
+        }
         setIsLoggedIn(false);
         props.getCountriesList();
         props.getBusinessTypes();
@@ -197,8 +191,13 @@ export default function Header(props) {
     }, []);
 
 
+
     const navigateToRegister = () => {
         history.push('/register');
+    }
+    
+    const navigatetoLogin=()=>{
+        history.push('/login')
     }
 
     const change = (e) => {
@@ -253,7 +252,6 @@ export default function Header(props) {
         })
     }
 
-    
 
     const handleClosed = () => {
         setOpen(!openDialog)
@@ -290,7 +288,7 @@ export default function Header(props) {
                 <div style={{ display: 'inline' }}>
                     <Button variant="contained"
                         className={classes.margin}
-                        onClick={handleClosed}>Login
+                        onClick={()=>{navigatetoLogin()}}>Login
                  </Button>
                     <LoginPopUpContainer />
                 </div>
@@ -336,6 +334,16 @@ export default function Header(props) {
         setAnchorEl(null);
     };
 
+    const handleProfile = () => {
+        if(localStorage.getItem('userProfile')){
+            history.push('/dashboard');
+        }
+        if(localStorage.getItem('providerProfile')){
+            history.push('/provider/dashboard');
+        }
+
+        }
+
 
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
@@ -356,36 +364,35 @@ export default function Header(props) {
                         </Select>
                     </div>
                     <div>
-                    <Select value={selectedSearchItem} style={{ marginRight: 10, color: "#fff", width: "100px" }}>
-                        <MenuItem value={"all"} autoWidth={true} onClick={handleSelectedCategory}>All Categories </MenuItem>
-                        <MenuItem value={"name"} autoWidth={true} onClick={handleSelectedCategory}>Name</MenuItem>
-                        <MenuItem value={"orgName"} autoWidth={true} onClick={handleSelectedCategory}>Organization Name</MenuItem>
-                    </Select>
-                    <TextField InputProps={{
-                        endAdornment: (
-                            <Icon className="fa fa-search" aria-hidden="true" />
-                        )
-                    }}
-                        style={{ color: "#fff", width: "500px", cursor: "pointer" }}
-                        onChange={performSearch}
-                    >
-                    </TextField>
+                        <Select value={selectedSearchItem} style={{ marginRight: 10, color: "#fff", width: "100px" }}>
+                            <MenuItem value={"all"} autoWidth={true} onClick={handleSelectedCategory}>All Categories </MenuItem>
+                            <MenuItem value={"name"} autoWidth={true} onClick={handleSelectedCategory}>Name</MenuItem>
+                            <MenuItem value={"orgName"} autoWidth={true} onClick={handleSelectedCategory}>Organization Name</MenuItem>
+                        </Select>
+                        <TextField InputProps={{
+                            endAdornment: (
+                                <Icon className="fa fa-search" aria-hidden="true" />
+                            )
+                        }}
+                            style={{ color: "#fff", width: "500px", cursor: "pointer" }}
+                            onChange={performSearch}
+                        >
+                        </TextField>
                     </div>
                     <p> &nbsp; &nbsp; </p>
                     <div>
                         <Button variant="contained" color="default" onClick={handleClickOpen}>
                             Filter
-                         </Button>
-                        <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={openFilter}>
-                            <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-                                Filter
+                        </Button>
+                        <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={openFilter} >
+                            <DialogTitle id="customized-dialog-title" onClose={handleClose} style={{ color: '#DC143C' }}>
+                                Choose your preferences here
                             </DialogTitle>
-                            <DialogContent style={{minHeight:'300px',minWidth:'500px'}} dividers>
-                                <div>
-                                    <InputLabel id="demo-mutiple-chip-label">Select your business preference</InputLabel>
-                                    <br/>
+                            <DialogContent style={{ minHeight: '300px', minWidth: '500px' }} dividers>
+                                <div >
+                                    <InputLabel id="businesschip" style={{ color: '#6A5ACD' }} >Select your business preferences</InputLabel>
+                                    <br />
                                     <Select
-                                        
                                         labelId="BussinessType"
                                         id="businesstype"
                                         multiple
@@ -400,19 +407,20 @@ export default function Header(props) {
                                             </div>
                                         )}
                                         MenuProps={MenuProps}
+                                        style={{ textDecorationColor: 'yellow' }}
                                     >
                                         {
-                                        (businessTypes && businessTypes.length) ? businessTypes.map((item, index) => {
-                                            return (<MenuItem key={index} value={item.name} >{item.name}</MenuItem>)
-                                        }) : <span>Loading....</span>
-                                    }
+                                            (businessTypes && businessTypes.length) ? businessTypes.map((item, index) => {
+                                                return (<MenuItem key={index} value={item.name} >{item.name}</MenuItem>)
+                                            }) : <span>Loading....</span>
+                                        }
                                     </Select>
-                                    </div>                               
-                                     <br/>
-                                     <br/>
-                                    <div>
-                                    <InputLabel id="Financechip">Select your financial preference</InputLabel>
-                                    <br/>
+                                </div>
+                                <br />
+                                <br />
+                                <div>
+                                    <InputLabel id="Financechip" style={{ color: '#6A5ACD' }}>Select your financial preferences</InputLabel>
+                                    <br />
                                     <Select
                                         labelId="FinancialType"
                                         id="FinancialType"
@@ -430,65 +438,58 @@ export default function Header(props) {
                                         MenuProps={MenuProps}
                                     >
                                         {
-                                        (financialTypes && financialTypes.length) ? financialTypes.map((item, index) => {
-                                            return (<MenuItem key={index} value={item.name}>{item.name}</MenuItem>)
-                                        }) : <span>Loading...</span>
-                                    }
+                                            (financialTypes && financialTypes.length) ? financialTypes.map((item, index) => {
+                                                return (<MenuItem key={index} value={item.name}>{item.name}</MenuItem>)
+                                            }) : <span>Loading...</span>
+                                        } 
                                     </Select>
-                                    </div>                                {/* <Select
-                                    closeMenuOnSelect={false}
-                                    defaultValue={selectedBusinessType}
-                                    isMulti
-                                    // options={stateOptions}
-                                // styles={colourStyles}
-                                > {
-                                    (businessTypes && businessTypes.length) ? businessTypes.map((item, index) => {
-                                        return (<MenuItem key={index} value={item.name} onClick={handleSelectedBusinessType}>{item.name}</MenuItem>)
-                                    }) : <span>Loading....</span>
-                                }
-                                </Select> */}
-                                {/* <Typography >Select the Expertice</Typography>
-                                <Select value={selectedBusinessType} style={{ marginLeft: 10, color: '#4B0082' }}>
-                                    {
-                                        (businessTypes && businessTypes.length) ? businessTypes.map((item, index) => {
-                                            return (<MenuItem key={index} value={item.name} onClick={handleSelectedBusinessType}>{item.name}</MenuItem>)
-                                        }) : <span>Loading....</span>
-                                    }
-                                </Select>
-                                <br />
-                                <Typography >Select the Expertice</Typography>
-                                <Select value={selectedFinancialType} style={{ marginLeft: 10, color: '#4B0082' }}>
-                                    {
-                                        (financialTypes && financialTypes.length) ? financialTypes.map((item, index) => {
-                                            return (<MenuItem key={index} value={item.name} onClick={handleSelectedFinancialType}>{item.name}</MenuItem>)
-                                        }) : <span>Loading...</span>
-                                    }
-                                </Select> */}
+                                </div>
                             </DialogContent>
                             <DialogActions>
-                                <Button autoFocus onClick={handleFilterClose} color="primary">
+                                <Button autoFocus onClick={handleFilterClose} style={{ color: "#228B22" }}>
                                     Apply Filter
                              </Button>
                             </DialogActions>
                         </Dialog>
                     </div>
-                   
 
+                   
                     <div className={classes.toolbarButtons}>
                         {
                             isLoggedIn ? null :
                                 <div>
-                                    <Button className={[classes.margin, classes.btnColorWhite]} onClick={handlePopper}>Providers</Button>
+                                    {
+                                     openProfile ? null:
+                                         <span>
+                                             <Button className={[classes.margin, classes.btnColorWhite]} onClick={handlePopper}>Providers</Button>
+                                        </span>
+                                    }
+                                    
                                     <Button className={[classes.margin, classes.btnColorWhite]}>Contact Us</Button>
                                     {
-                                        renderRegister()
-                                    }
-                                    {
-                                        renderLogin()
+                                     openProfile ? null:
+                                         <span>
+                                             {
+                                                renderRegister()
+                                            }
+                                            {
+                                                renderLogin()
+                                            }
+                                        </span>
                                     }
                                 </div>
                         }
                     </div>
+                        {
+                            openProfile?
+                            <div>
+                                <Button className={[classes.margin, classes.btnColorWhite]} onClick={handleProfile}>
+                                    <AccountCircleTwoToneIcon
+                                        style={{ fontSize: 30 }}
+                                    />
+                                </Button>
+                            </div>:null
+                        }
                     <Popper open={openPopper} placement={"bottom"} transition anchorEl={anchorE} style={{ marginTop: 20, width: "300px" }}>
                         {({ TransitionProps }) => (
                             <Fade {...TransitionProps} timeout={350}>

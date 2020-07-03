@@ -74,7 +74,8 @@ export default class ProviderLogin extends React.Component {
                 })
             } else {
                 window.localStorage.setItem('token', store.getState().providerLogin.success.token);
-                history.push('/provider/dashboard');
+                window.localStorage.setItem('providerProfile', true);
+                history.push('/');
             }
         })
     }

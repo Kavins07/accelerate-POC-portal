@@ -4,6 +4,8 @@ import { Paper, Avatar, Icon,
      TextField, Select, MenuItem, CardActions, Link, Button
 } from '@material-ui/core';
 import { store } from '../../store';
+import AccountCircleTwoToneIcon from '@material-ui/icons/AccountCircleTwoTone';
+import  { Redirect } from 'react-router-dom'
 
 export default class UserProfile extends React.Component {
     constructor(props) {
@@ -42,6 +44,9 @@ export default class UserProfile extends React.Component {
     handleTabChange = (e) => {
         console.log(e);
     }
+    handleBack = () =>{
+        
+        }
 
     render() {
         return(
@@ -52,11 +57,17 @@ export default class UserProfile extends React.Component {
                         <div>
                             <div style={{paddingTop:200, height:'100%', width:'100%', position: 'absolute',top: 0, left: 0}} className="rootCont">
                                 <Grid container>
-                                    <Grid item xs={7} style={{marginLeft:300}}>
+                                    <Grid item  style={{marginLeft:300}}>
                                     <Card>
-                                        <CardHeader title="User Profile" />
+                                        <CardHeader title="User Profile" >
+                                            
+                                            </CardHeader>
                                         <CardContent>
-                                            <Avatar style={{marginLeft:400}}>{this.state.userDetails[0].name}</Avatar>
+                                            <AccountCircleTwoToneIcon
+                                            color="primary" 
+                                            style={{fontSize: 100}}
+                                            />
+                                            {/* <Avatar style={{marginLeft:400}}>{this.state.userDetails[0].name}</Avatar> */}
                                             <form noValidate autoCapitalize="off">
                                                 <TextField 
                                                     id="name"
@@ -104,7 +115,7 @@ export default class UserProfile extends React.Component {
                                                     />
                                                 </Grid>
                                                 <br />
-                                                <Button variant="contained" type="submit" color="primary">Update your account</Button>
+                                                <Button variant="contained" type="submit" color="primary">Update</Button>
                                             </form>
                                         </CardContent>
                                         </Card>

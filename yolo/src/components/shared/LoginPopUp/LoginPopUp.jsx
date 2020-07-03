@@ -43,7 +43,12 @@ export default class LoginPopUp extends React.Component {
             }
             if(store.getState().userLogin.success.status === true) {
                 window.localStorage.setItem('token', store.getState().userLogin.success.token);
-                history.push('/dashboard');
+                this.setState({
+                    open: false
+                })
+                window.localStorage.setItem('userProfile', true);
+                window.location.reload(false);
+                history.push('/');
             }
         })
     }

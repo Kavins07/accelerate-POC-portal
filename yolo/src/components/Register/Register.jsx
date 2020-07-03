@@ -108,8 +108,8 @@ export default class Register extends React.Component {
             <div>
                 <HeaderContainer />
                 <div style={{backgroundColor:'#20ABC7', paddingTop:200, height:'100%', width:'100%', position: 'absolute',top: 0, left: 0}} className="rootCont">
-                    <Grid container>
-                        <Grid item xs={7} style={{marginLeft:100}}>
+                    <Grid container style={{justifyContent: 'center'}}>
+                        <Grid item  style={{marginLeft:100}}>
                         <Card>
                             <CardHeader title="It seems you are new here! Register to Continue" />
                             <CardContent>
