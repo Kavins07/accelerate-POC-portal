@@ -24,10 +24,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Input from '@material-ui/core/Input';
 import Chip from '@material-ui/core/Chip';
 import AccountCircleTwoToneIcon from '@material-ui/icons/AccountCircleTwoTone';
-import { Alert, AlertTitle } from '@material-ui/lab';
-
-
-
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import Dropdown from 'react-bootstrap/Dropdown'
 
 export default function Header(props) {
 
@@ -195,8 +193,8 @@ export default function Header(props) {
     const navigateToRegister = () => {
         history.push('/register');
     }
-    
-    const navigatetoLogin=()=>{
+
+    const navigatetoLogin = () => {
         history.push('/login')
     }
 
@@ -288,7 +286,7 @@ export default function Header(props) {
                 <div style={{ display: 'inline' }}>
                     <Button variant="contained"
                         className={classes.margin}
-                        onClick={()=>{navigatetoLogin()}}>Login
+                        onClick={() => { navigatetoLogin() }}>Login
                  </Button>
                     <LoginPopUpContainer />
                 </div>
@@ -335,14 +333,14 @@ export default function Header(props) {
     };
 
     const handleProfile = () => {
-        if(localStorage.getItem('userProfile')){
+        if (localStorage.getItem('userProfile')) {
             history.push('/dashboard');
         }
-        if(localStorage.getItem('providerProfile')){
+        if (localStorage.getItem('providerProfile')) {
             history.push('/provider/dashboard');
         }
 
-        }
+    }
 
 
     const open = Boolean(anchorEl);
@@ -381,7 +379,7 @@ export default function Header(props) {
                     </div>
                     <p> &nbsp; &nbsp; </p>
                     <div>
-                        <Button variant="contained" color="default" onClick={handleClickOpen}>
+                        <Button className={classes.btnColorWhite} onClick={handleClickOpen}>
                             Filter
                         </Button>
                         <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={openFilter} >
@@ -441,7 +439,7 @@ export default function Header(props) {
                                             (financialTypes && financialTypes.length) ? financialTypes.map((item, index) => {
                                                 return (<MenuItem key={index} value={item.name}>{item.name}</MenuItem>)
                                             }) : <span>Loading...</span>
-                                        } 
+                                        }
                                     </Select>
                                 </div>
                             </DialogContent>
@@ -453,43 +451,54 @@ export default function Header(props) {
                         </Dialog>
                     </div>
 
-                   
+
                     <div className={classes.toolbarButtons}>
                         {
                             isLoggedIn ? null :
                                 <div>
                                     {
-                                     openProfile ? null:
-                                         <span>
-                                             <Button className={[classes.margin, classes.btnColorWhite]} onClick={handlePopper}>Providers</Button>
-                                        </span>
+                                        openProfile ? null :
+                                            <span>
+                                                <Button className={[classes.margin, classes.btnColorWhite]} onClick={handlePopper}>Providers</Button>
+                                            </span>
                                     }
-                                    
+
                                     <Button className={[classes.margin, classes.btnColorWhite]}>Contact Us</Button>
                                     {
-                                     openProfile ? null:
-                                         <span>
-                                             {
-                                                renderRegister()
-                                            }
-                                            {
-                                                renderLogin()
-                                            }
-                                        </span>
+                                        openProfile ? null :
+                                            <span>
+                                                {
+                                                    renderRegister()
+                                                }
+                                                {
+                                                    renderLogin()
+                                                }
+                                            </span>
                                     }
                                 </div>
                         }
                     </div>
-                        {
-                            openProfile?
+                    {
+                        openProfile ?
                             <div>
                                 <Button className={[classes.margin, classes.btnColorWhite]} onClick={handleProfile}>
                                     <AccountCircleTwoToneIcon
                                         style={{ fontSize: 30 }}
                                     />
                                 </Button>
-                            </div>:null
-                        }
+                                <DropdownButton
+                                    alignRight
+                                    title="Dropdown right"
+                                    id="dropdown-menu-align-right"
+                                >
+                                    <Dropdown.Item eventKey="1">Action</Dropdown.Item>
+                                    <Dropdown.Item eventKey="2">Another action</Dropdown.Item>
+                                    <Dropdown.Item eventKey="3">Something else here</Dropdown.Item>
+                                    <Dropdown.Divider />
+                                    <Dropdown.Item eventKey="4">Separated link</Dropdown.Item>
+                                </DropdownButton>
+                            </div> : null
+                    }
                     <Popper open={openPopper} placement={"bottom"} transition anchorEl={anchorE} style={{ marginTop: 20, width: "300px" }}>
                         {({ TransitionProps }) => (
                             <Fade {...TransitionProps} timeout={350}>
