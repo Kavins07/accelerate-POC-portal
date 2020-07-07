@@ -39,7 +39,6 @@ export default function Header(props) {
     const [errorMessage, setErrorMessage] = useState("");
     const [openPopper, setOpenPopper] = useState(false);
     const [countriesList, setCountriesList] = useState([]);
-    const [userDetails,setuserDetails]=useState([]);
     const [selectedCountry, setSelectedCountry] = useState("India");
     const [selectedSearchItem, setselectedSearchItem] = useState("All");
     const [businessTypes, setBusinessTypes] = useState([]);
@@ -48,6 +47,7 @@ export default function Header(props) {
     const [selectedFinancialType, setselectedFinancialType] = useState(["Banking"]);
     const [openProfile, setopenProfile] = useState(false);
     const [anchorMenuEl, setAnchorMenuEl] = React.useState(null);
+    const [userName,setuserDetails]=useState([]);
     
 
     const styles = (theme) => ({
@@ -204,10 +204,16 @@ export default function Header(props) {
             setCountriesList(store.getState().getCountries.countries);
             setBusinessTypes(store.getState().getBusinessTypes.success);
             setFinancialTypes(store.getState().getFinancialService.success);
+            //if(localStorage.getItem('userProfile')){
+            //     setuserDetails(store.getState().getUserDetails);
+                // setuserDetails(true);
+                // localStorage.setItem('userDeatils',userDetails[0]);
+            // }
         });
+        if(localStorage.getItem('userProfile')==='true'){
+            setName(store.getState().getUserDetails.success[0].name);
+        }
     }, []);
-
-
 
     const navigateToRegister = () => {
         history.push('/register');
@@ -352,6 +358,7 @@ export default function Header(props) {
 
     const handleProfile = () => {
         if (localStorage.getItem('userProfile')) {
+            localStorage.setItem('userProfile',false);
             history.push('/dashboard');
         }
         if (localStorage.getItem('providerProfile')) {
@@ -360,7 +367,7 @@ export default function Header(props) {
 
     }
 
-
+  
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
 
@@ -505,9 +512,12 @@ export default function Header(props) {
                                     />
                                 </Button> */}
                                 <Button className={[classes.margin, classes.btnColorWhite]} aria-controls="simple-menu" aria-haspopup="true" onClick={handlemenuClick}>
+                                    {name}
+                                    <p> &nbsp; &nbsp; </p>
                                     <AccountCircleTwoToneIcon
                                         style={{ fontSize: 30 }}
                                     />
+                                {/* <Button onClick={handleuser}>Open alert</Button> */}
                                 </Button>
                                 <Menu
                                     id="simple-menu"

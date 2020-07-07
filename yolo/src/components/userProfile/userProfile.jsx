@@ -38,15 +38,12 @@ export default class UserProfile extends React.Component {
                     countries: store.getState().getCountries.countries
                 })
             })
-    }
+    }  
 
     handleTabChange = (e) => {
         console.log(e);
     }
-    handleBack = () =>{
-        
-        }
-
+   
     render() {
         return(
             <div style={{width: 900, marginLeft:300}}>

@@ -8,6 +8,8 @@ import {
 import { history } from '../../../store';
 import clsx from 'clsx';
 import Fab from '@material-ui/core/Fab';
+import { useEffect } from 'react';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 
@@ -105,8 +107,17 @@ export default function ProcHeader() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+ 
+  useEffect(()=>{
+    if(localStorage.getItem('userProfile')==='true'){
+      setTimeout(() => {
+        history.push('/');
+      }, 500);
+    }
+  })
 
   const handleBack = ()=>{
+    localStorage.setItem('userProfile',true)
     history.push('/')
   }
 
