@@ -25,7 +25,6 @@ import Input from '@material-ui/core/Input';
 import Chip from '@material-ui/core/Chip';
 import AccountCircleTwoToneIcon from '@material-ui/icons/AccountCircleTwoTone';
 import Menu from '@material-ui/core/Menu';
-import Grow from '@material-ui/core/Grow';
 
 
 
@@ -40,6 +39,7 @@ export default function Header(props) {
     const [errorMessage, setErrorMessage] = useState("");
     const [openPopper, setOpenPopper] = useState(false);
     const [countriesList, setCountriesList] = useState([]);
+    const [userDetails,setuserDetails]=useState([]);
     const [selectedCountry, setSelectedCountry] = useState("India");
     const [selectedSearchItem, setselectedSearchItem] = useState("All");
     const [businessTypes, setBusinessTypes] = useState([]);
@@ -48,7 +48,7 @@ export default function Header(props) {
     const [selectedFinancialType, setselectedFinancialType] = useState(["Banking"]);
     const [openProfile, setopenProfile] = useState(false);
     const [anchorMenuEl, setAnchorMenuEl] = React.useState(null);
-    const [userDetails,setuserDetails]=useState([])
+    
 
     const styles = (theme) => ({
         root: {
@@ -107,6 +107,13 @@ export default function Header(props) {
             payload: event.target.value
         })
     };
+
+    const logout = () => {
+        window.localStorage.removeItem('token');
+        window.localStorage.removeItem('userProfile');
+        window.localStorage.removeItem('providerProfile');
+        window.location.reload(false);
+    }
 
     // const handleBussinessChangeMultiple = (event) => {
     //     const { options } = event.target;
@@ -197,7 +204,7 @@ export default function Header(props) {
             setCountriesList(store.getState().getCountries.countries);
             setBusinessTypes(store.getState().getBusinessTypes.success);
             setFinancialTypes(store.getState().getFinancialService.success);
-        })
+        });
     }, []);
 
 
@@ -261,7 +268,6 @@ export default function Header(props) {
             payload: e.target.getAttribute('data-value')
         })
     }
-
 
     const handleClosed = () => {
         setOpen(!openDialog)
@@ -499,7 +505,6 @@ export default function Header(props) {
                                     />
                                 </Button> */}
                                 <Button className={[classes.margin, classes.btnColorWhite]} aria-controls="simple-menu" aria-haspopup="true" onClick={handlemenuClick}>
-                                    Kavin S
                                     <AccountCircleTwoToneIcon
                                         style={{ fontSize: 30 }}
                                     />
@@ -511,9 +516,9 @@ export default function Header(props) {
                                     open={Boolean(anchorMenuEl)}
                                     onClose={handlemenuClose}
                                 >
-                                    <MenuItem onClick={handlemenuClose}>Profile</MenuItem>
-                                    <MenuItem onClick={handlemenuClose}>My account</MenuItem>
-                                    <MenuItem onClick={handlemenuClose}>Logout</MenuItem>
+                                    <MenuItem onClick={handleProfile}>Profile</MenuItem>
+        
+                                    <MenuItem onClick={logout}>Logout</MenuItem>
                                     
                                 </Menu>
                             </div> : null

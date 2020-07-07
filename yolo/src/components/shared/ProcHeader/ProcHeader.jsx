@@ -136,9 +136,8 @@ export default function ProcHeader() {
             {name}
           </Typography>
           <Grid container spacing={24} />
-          <Button variant="contained" color="default" onClick={handleBack}>Back</Button>            
+          <Button variant="contained" type="submit" color="primary"  onClick={handleBack}>Back</Button>            
         </Toolbar>
-
       </AppBar>
       <Drawer
         className={classes.drawer}

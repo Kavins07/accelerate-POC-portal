@@ -52,7 +52,8 @@ export default class UserProfile extends React.Component {
             <div style={{width: 900, marginLeft:300}}>
                 <Paper square>
                     {
-                        !this.state.userDetails.length ? <div>Please wait</div> :
+                        !this.state.userDetails.length ? <div>Please wait
+                        </div> :
                         <div>
                             <div style={{paddingTop:200, height:'100%', width:'100%', position: 'absolute',top: 0, left: 0}} className="rootCont">
                                 <Grid container>
