@@ -5,7 +5,6 @@ import { Paper, Avatar, Icon,
 } from '@material-ui/core';
 import { store } from '../../store';
 import AccountCircleTwoToneIcon from '@material-ui/icons/AccountCircleTwoTone';
-import  { Redirect } from 'react-router-dom'
 
 export default class UserProfile extends React.Component {
     constructor(props) {

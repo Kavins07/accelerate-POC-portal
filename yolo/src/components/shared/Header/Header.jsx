@@ -24,8 +24,10 @@ import IconButton from '@material-ui/core/IconButton';
 import Input from '@material-ui/core/Input';
 import Chip from '@material-ui/core/Chip';
 import AccountCircleTwoToneIcon from '@material-ui/icons/AccountCircleTwoTone';
-import DropdownButton from 'react-bootstrap/DropdownButton';
-import Dropdown from 'react-bootstrap/Dropdown'
+import Menu from '@material-ui/core/Menu';
+import Grow from '@material-ui/core/Grow';
+
+
 
 export default function Header(props) {
 
@@ -45,6 +47,8 @@ export default function Header(props) {
     const [selectedBusinessType, setSelectedBusinessType] = useState(["Company Secretary"]);
     const [selectedFinancialType, setselectedFinancialType] = useState(["Banking"]);
     const [openProfile, setopenProfile] = useState(false);
+    const [anchorMenuEl, setAnchorMenuEl] = React.useState(null);
+    const [userDetails,setuserDetails]=useState([])
 
     const styles = (theme) => ({
         root: {
@@ -85,6 +89,14 @@ export default function Header(props) {
                 width: 250,
             },
         },
+    };
+
+    const handlemenuClick = (event) => {
+        setAnchorMenuEl(event.currentTarget);
+    };
+
+    const handlemenuClose = () => {
+        setAnchorMenuEl(null);
     };
 
     const handleBussinessChange = (event) => {
@@ -481,22 +493,29 @@ export default function Header(props) {
                     {
                         openProfile ?
                             <div>
-                                <Button className={[classes.margin, classes.btnColorWhite]} onClick={handleProfile}>
+                                {/* <Button className={[classes.margin, classes.btnColorWhite]} onClick={handleProfile}>
+                                    <AccountCircleTwoToneIcon
+                                        style={{ fontSize: 30 }}
+                                    />
+                                </Button> */}
+                                <Button className={[classes.margin, classes.btnColorWhite]} aria-controls="simple-menu" aria-haspopup="true" onClick={handlemenuClick}>
+                                    Kavin S
                                     <AccountCircleTwoToneIcon
                                         style={{ fontSize: 30 }}
                                     />
                                 </Button>
-                                <DropdownButton
-                                    alignRight
-                                    title="Dropdown right"
-                                    id="dropdown-menu-align-right"
+                                <Menu
+                                    id="simple-menu"
+                                    anchorEl={anchorMenuEl}
+                                    keepMounted
+                                    open={Boolean(anchorMenuEl)}
+                                    onClose={handlemenuClose}
                                 >
-                                    <Dropdown.Item eventKey="1">Action</Dropdown.Item>
-                                    <Dropdown.Item eventKey="2">Another action</Dropdown.Item>
-                                    <Dropdown.Item eventKey="3">Something else here</Dropdown.Item>
-                                    <Dropdown.Divider />
-                                    <Dropdown.Item eventKey="4">Separated link</Dropdown.Item>
-                                </DropdownButton>
+                                    <MenuItem onClick={handlemenuClose}>Profile</MenuItem>
+                                    <MenuItem onClick={handlemenuClose}>My account</MenuItem>
+                                    <MenuItem onClick={handlemenuClose}>Logout</MenuItem>
+                                    
+                                </Menu>
                             </div> : null
                     }
                     <Popper open={openPopper} placement={"bottom"} transition anchorEl={anchorE} style={{ marginTop: 20, width: "300px" }}>
