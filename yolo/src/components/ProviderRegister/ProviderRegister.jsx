@@ -17,14 +17,11 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import PropTypes from 'prop-types';
-import SwipeableViews from 'react-swipeable-views';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
+
+import { makeStyles } from '@material-ui/core/styles';
+// import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-// import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
 
 
 
@@ -60,7 +57,7 @@ export default class ProviderRegister extends React.Component {
             OrgExpertise: [],
             open: false,
             showAlert: false,
-            value:0,
+            value: 0,
             errors: {
                 firstName: '',
                 lastName: '',
@@ -73,7 +70,7 @@ export default class ProviderRegister extends React.Component {
                 email: '',
                 confirmPassword: '',
                 phoneNumber: ''
-            }
+            },
         }
     }
 
@@ -87,58 +84,19 @@ export default class ProviderRegister extends React.Component {
         };
     }
 
-     TabPanel=(props)=> {
-        const { children, value, index, ...other } = props;
-      
-        return (
-          <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`full-width-tabpanel-${index}`}
-            aria-labelledby={`full-width-tab-${index}`}
-            {...other}
-          >
-            {value === index && (
-              <Box p={3}>
-                <Typography>{children}</Typography>
-              </Box>
-            )}
-          </div>
-        );
-      }
-      
-    //   TabPanel.propTypes = {
-    //     children: PropTypes.node,
-    //     index: PropTypes.any.isRequired,
-    //     value: PropTypes.any.isRequired,
-    //   };
-      
-      a11yProps =(index)=> {
-        return {
-          id: `full-width-tab-${index}`,
-          'aria-controls': `full-width-tabpanel-${index}`,
-        };
-      }
-      
-      useStyles = makeStyles((theme) => ({
+    classes = makeStyles({
         root: {
-          backgroundColor: theme.palette.background.paper,
-          width: 500,
+            flexGrow: 1,
         },
-      }));
-      
-      classes = this.useStyles();
-      theme = useTheme();
-    //   [value, setValue] = React.useState(0);
-    
-       handleChange = (event, newValue) => {
-        this.setState({value:newValue});
-      };
-    
-       handleChangeIndex = (index) => {
-        this.setState({value:index});
-      };
-    
+    });
+
+    //   const [value, setValue] = React.useState(0);
+
+    handleChange = (event, newValue) => {
+        this.setState({ value: newValue });
+    };
+
+
 
     change = (e) => {
         const { name, value } = e.target;
@@ -227,6 +185,12 @@ export default class ProviderRegister extends React.Component {
 
     storeSelectedservices = (value) => {
         var newArrayobj = []
+        if (this.state.value.length === 1) {
+                    this.setState({
+                        showAlert: true
+                    })
+                    return null;
+                }
         this.state.services.forEach(element1 => {
             value.forEach(element2 => {
                 if (element1.name === element2) {
@@ -390,15 +354,29 @@ export default class ProviderRegister extends React.Component {
             return (
                 <Paper style={{ height: 500 }}>
                     <h4>Enter your Organization Services</h4>
-                    
-                    <div style={{ display: 'inline-flex' }}>
+                    <Paper className={this.classes.root}>
+                        <Tabs
+                            value={this.state.value}
+                            onChange={this.handleChange}
+                            indicatorColor="secondary"
+                            textColor="primary"
+                            centered
+                        >
+                            <Tab label="Select your service Type" />
+                            <Tab label="Select your Expertise" />
+                        </Tabs>
+                    </Paper>
+                    {
+                        this.state.value !== 1 ?
+                        <div style={{ display: 'inline-flex', marginBottom: 50 }}>
                         <div>
-                            <Paper style={{ width: 800, marginBottom: 50 }}>
+                            {/* <Paper style={{ width: 800, marginBottom: 50 }}> */}
                                 {
                                     this.state.showAlert ? <Alert severity="warning">Cannot delete. Atleast one expertise required</Alert> : null
                                 }
-                                <InputLabel id="demo-simple-select-label" style={{ marginBottom: 20 }}>Select your service Type</InputLabel>
-                                {
+                                {/* <InputLabel id="demo-simple-select-label" style={{ marginBottom: 20 }}>Select your service Type</InputLabel> */}
+                                <br/>
+                                <br/>
                                     <Autocomplete
                                         multiple
                                         id="checkboxes-tags-demo"
@@ -422,15 +400,14 @@ export default class ProviderRegister extends React.Component {
                                             <TextField {...params} variant="outlined" label="Select your service Type" placeholder="services" />
                                         )}
                                     />
-
-                                }
-                            </Paper>
-
+                            {/* </Paper> */}
                         </div>
-                    </div><br />
-                    <div style={{ display: 'inline-flex', marginBottom: 50 }}>
+                        <br/><br/>
+                    </div>: <div style={{ display: 'inline-flex', marginBottom: 50 }}>
                         <div>
-                            <InputLabel id="demo-simple-select-label">Please Select your Expertise</InputLabel>
+                            {/* <InputLabel id="demo-simple-select-label">Please Select your Expertise</InputLabel> */}
+                            <br/>
+                            <br/>
                             <Autocomplete
                                 multiple
                                 id="checkboxes-tags-demo"
@@ -467,7 +444,10 @@ export default class ProviderRegister extends React.Component {
                                 }
                             </Select> */}
                         </div>
-                    </div><br />
+                    </div>
+                    }
+                    <br/>
+                   <br />
                     <Button
                         disabled={this.state.activeStep === 0}
                         onClick={this.handleBack} style={{ marginRight: 30 }}

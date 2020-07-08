@@ -71,7 +71,7 @@ export default class Register extends React.Component {
                     errorMessage: store.getState().userRegister.error
                 })
             } else{ 
-                history.push('/login');
+                history.push('/');
             }
         })
     }
