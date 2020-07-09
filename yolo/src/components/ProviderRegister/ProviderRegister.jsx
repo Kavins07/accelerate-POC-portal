@@ -281,6 +281,7 @@ export default class ProviderRegister extends React.Component {
     }
 
 
+
     getStepperContent = () => {
         if (this.state.activeStep === 3) {
             return (
@@ -380,6 +381,7 @@ export default class ProviderRegister extends React.Component {
                                     <Autocomplete
                                         multiple
                                         id="checkboxes-tags-demo"
+                                        value={this.state.selectedServices}
                                         options={this.state.servivesList}
                                         disableCloseOnSelect
                                         getOptionLabel={(option) => option}
@@ -411,6 +413,7 @@ export default class ProviderRegister extends React.Component {
                             <Autocomplete
                                 multiple
                                 id="checkboxes-tags-demo"
+                                value={this.state.OrgExpertise}
                                 options={this.state.expertise}
                                 disableCloseOnSelect
                                 getOptionLabel={(option) => option.name}
