@@ -13,7 +13,8 @@ import HomeContainer from './containers/homeContainer';
 import AdminDashboardContainer from './containers/adminDashboardContainer';
 import Dashboard from './components/Dashboard/Dashboard';
 import './App.css';
-import log from "./utils/logger.service"
+import log from "./utils/logger.service";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   fetch('https://api.ipify.org?format=jsonp?callback=?',{
