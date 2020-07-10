@@ -198,7 +198,7 @@ export default class UserProfile extends React.Component {
                                                                     onChange={(e) => this.change(e)} />
                                                             </Col>
                                                             <Col md={2}>
-                                                                <Button onClick={() => { this.setState({ disableName: false })}}>Edit</Button>
+                                                                <Button color="secondary" onClick={() => { this.setState({ disableName: false })}}>Edit</Button>
                                                             </Col>
                                                         </Row>
                                                         <Row>
@@ -223,7 +223,7 @@ export default class UserProfile extends React.Component {
                                                                     onChange={(e) => this.change(e)} />
                                                             </Col>
                                                             <Col md={2}>
-                                                                <Button onClick={() => { this.setState({ disableEmail: false })}}>Edit</Button>
+                                                                <Button color="secondary" onClick={() => { this.setState({ disableEmail: false })}}>Edit</Button>
                                                             </Col>
                                                         </Row>
                                                         <Row>
@@ -279,7 +279,7 @@ export default class UserProfile extends React.Component {
                                                                 </Row>
                                                             </Col>
                                                             <Col md={2}>
-                                                                <Button onClick={() => { this.setState({ disableNumber: false }) }}>Edit</Button>
+                                                                <Button color="secondary" onClick={() => { this.setState({ disableNumber: false }) }}>Edit</Button>
                                                             </Col>
                                                         </Row>
                                                         <Row>
