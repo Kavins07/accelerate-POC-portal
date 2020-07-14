@@ -1,6 +1,10 @@
 import React from 'react';
 import HeaderContainer from '../../containers/headerContainer';
 import './ProviderRegister.css';
+import {default as RSelect} from 'react-select';
+import makeAnimated from 'react-select/animated';
+import 'react-checkbox-tree/lib/react-checkbox-tree.css';
+import CheckboxTree from 'react-checkbox-tree';
 import {
     Container,
     InputLabel, Icon,
@@ -23,6 +27,15 @@ import { makeStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
+//from ramids
+const nodes = [{
+    value: 'mars',
+    label: 'Mars',
+    children: [
+        { value: 'phobos', label: 'Phobos' },
+        { value: 'deimos', label: 'Deimos' },
+    ],
+}];
 
 
 export default class ProviderRegister extends React.Component {
@@ -38,6 +51,46 @@ export default class ProviderRegister extends React.Component {
             countries: [],
             businessList: ['Business Incorporation', 'GST Service', 'Startup Serices', 'Legal Complaince Service', 'Tax Returns', 'Goverment Registration', 'Trademark', 'Miscelleneous Services'],
             individualList: ['Tax returns', 'TDS', 'Legal', 'Miscelleneous Services'],
+            businessList1: [
+                { value: 'Business Incorporation', label: 'Business Incorporation' },
+                { value: 'strawberry', label: 'Strawberry' },
+                { value: 'vanilla', label: 'Vanilla' }
+            ],
+            indNodes: [{
+                value: 'Individual',
+                label: 'Individual',
+                children: [
+                    {value: 'Tax returns', label: 'Tax returns'},
+                    { value: 'TDS', label: 'TDS'},
+                    { value: 'Legal', label: 'Legal' },
+                    {value: 'Miscelleneous Services', label: 'Miscelleneous Services'}
+                ],
+            }],
+        
+            busNodes: [{
+                value: 'Business',
+                label: 'Business',
+                children: [
+                    {value: 'Business Incorporation', label: 'Business Incorporation',childern:[
+                        {value: 'A', label: 'A'},
+                        {value: 'B', label: 'B'}
+                    ]},
+                    { value: 'GST Service', label: 'GST Service'},
+                    { value: 'Startup Services', label: 'Startup Services'},
+                    { value: 'Legal Complaince Service', label: 'Legal Complaince Service'},
+                    { value: 'Tax Returns', label: 'Tax Returns' },
+                    { value: 'Goverment Registration', label: 'Goverment Registration'},
+                    { value: 'Trademark', label: 'Trademark'},
+                    { value: 'Miscelleneous Services', label: 'Miscelleneous Services'},
+                ],
+            }],
+            perChecked: [],
+            perExpanded: [],
+            busChecked: [],
+            busExpanded: [],
+            checked: [],
+            expanded: [],
+            selectedBusinesses: [],
             services: [],
             servivesList: [],
             selectedServices: [],
@@ -95,6 +148,18 @@ export default class ProviderRegister extends React.Component {
     handleChange = (event, newValue) => {
         this.setState({ value: newValue });
     };
+
+    handleDelete = (name) => {
+        if(this.state.services.length === 1) {
+            this.setState({
+                showAlert: true
+            })
+            return null;
+        }
+        this.setState({
+            services: this.state.services.filter(item=> item.name !== name.name)
+        })
+    }
 
 
 
@@ -281,71 +346,193 @@ export default class ProviderRegister extends React.Component {
     }
 
 
+    renderMultiSelect = (options) => {
+        const animatedComponents = makeAnimated();
+        return (
+            <RSelect
+                className="multi-select"
+                closeMenuOnSelect={false}
+                components={animatedComponents}
+                isMulti
+                options={options}
+                onChange={this.multiSelectGetValues}>
+            </RSelect>
+        );
+    }
+
+    multiSelectGetValues = (...vv) => {
+        console.log('values sel ', ...vv);
+        this.setState({
+            selectedBusinesses: vv[0]
+        });
+    }
+
+    renderMultiCheck = () => {
+        return (
+            <CheckboxTree
+                nodes={this.state.busNodes}
+                checked={this.state.checked}
+                expanded={this.state.expanded}
+                onCheck={checked => this.setState({ checked })}
+                onExpand={expanded => this.setState({ expanded })}
+            />
+        );
+    }
+    renderMultiCheck1 = () => {
+        return (
+            <CheckboxTree
+                nodes={this.state.indNodes}
+                checked={this.state.checked}
+                expanded={this.state.expanded}
+                onCheck={checked => this.setState({ checked })}
+                onExpand={expanded => this.setState({ expanded })}
+            />
+        );
+    }
+
 
     getStepperContent = () => {
-        if (this.state.activeStep === 3) {
-            return (
-                <Paper style={{ height: 500 }}>
-                    <h4>Please provide your serice type details</h4>
-                    <div style={{ display: 'inline-flex' }}>
+        // if (this.state.activeStep === 3) {
+        //     return (
+        //         <Paper style={{ height: 500 }}>
+        //             <h4>Please provide your serice type details</h4>
+        //             <div style={{ display: 'inline-flex' }}>
+        //                 <div>
+        //                     <Paper style={{ width: 800, marginBottom: 50 }}>
+        //                         <ExpansionPanel style={{ width: 800 }}>
+        //                             <ExpansionPanelSummary expandIcon={<Icon className="fa fa-sort-desc" aria-hidden="true" />}>
+        //                                 <Typography>{"For business"}</Typography>
+        //                             </ExpansionPanelSummary>
+        //                             <ExpansionPanelSummary >
+        //                                 {
+        //                                     (this.state.individualList && this.state.individualList.length) ? this.state.individualList.map((item, index) => {
+        //                                         return <Chip label={item}
+        //                                             style={{ marginBottom: 10, marginRight: 10 }}
+        //                                             onDelete={() => this.handleDelete(item)}
+        //                                             onClick={() => this.handleClick()}
+        //                                             clickable
+        //                                             key={index}
+        //                                             avatar={<Avatar
+        //                                                 className="avatarRe">{item[0]}</Avatar>}
+        //                                         />
+        //                                     }) : <span>No serices found.</span>
+        //                                 }
+        //                             </ExpansionPanelSummary>
+        //                         </ExpansionPanel>
+
+        //                         <ExpansionPanel style={{ width: 800 }}>
+        //                             <ExpansionPanelSummary expandIcon={<Icon className="fa fa-sort-desc" aria-hidden="true" />}>
+        //                                 <Typography>{"For business"}</Typography>
+        //                             </ExpansionPanelSummary>
+        //                             <ExpansionPanelSummary>
+        //                                 <div>
+        //                                     {
+        //                                         (this.state.individualList && this.state.businessList.length) ? this.state.businessList.map((item, index) => {
+        //                                             return <Chip label={item}
+        //                                                 style={{ marginBottom: 10, marginRight: 10 }}
+        //                                                 onDelete={() => this.handleDelete(item)}
+        //                                                 onClick={() => this.handleClick()}
+        //                                                 clickable
+        //                                                 key={index}
+        //                                                 avatar={<Avatar
+        //                                                     className="avatarRe">{item[0]}</Avatar>}
+        //                                             />
+        //                                         }) : <span>No serices found.</span>
+        //                                     }
+        //                                 </div>
+        //                             </ExpansionPanelSummary>
+        //                         </ExpansionPanel>
+        //                     </Paper>
+        //                 </div>
+        //             </div><br />
+        //             <Button disabled={this.state.activeStep === 0} onClick={this.handleBack}
+        //                 style={{ marginRight: 30 }} variant="outlined"
+        //             >Back</Button>
+        //             <Button onClick={this.handleReset}
+        //                 variant="outlined"
+        //                 color="secondary"
+        //                 style={{ marginRight: 30 }}>Reset Form
+        //             </Button>
+        //             <Button onClick={this.createOrganization}
+        //                 variant="outlined"
+        //                 color="primary">Create your Provider Account
+        //             </Button>
+        //         </Paper>
+        //     )
+        // }
+        if(this.state.activeStep === 3) {
+            return(
+                <Paper style={{height:500}}>
+                    <h4>Please provide your service type details</h4>
+                    <div style={{display: 'inline-flex'}}>
                         <div>
-                            <Paper style={{ width: 800, marginBottom: 50 }}>
-                                <ExpansionPanel style={{ width: 800 }}>
-                                    <ExpansionPanelSummary expandIcon={<Icon className="fa fa-sort-desc" aria-hidden="true" />}>
-                                        <Typography>{"For business"}</Typography>
-                                    </ExpansionPanelSummary>
-                                    <ExpansionPanelSummary >
-                                        {
-                                            (this.state.individualList && this.state.individualList.length) ? this.state.individualList.map((item, index) => {
-                                                return <Chip label={item}
-                                                    style={{ marginBottom: 10, marginRight: 10 }}
-                                                    onDelete={() => this.handleDelete(item)}
-                                                    onClick={() => this.handleClick()}
+                            <Paper style={{width: 800, marginBottom: 50}}>
+                    <ExpansionPanel style={{width:800}}>
+                        <ExpansionPanelSummary expandIcon={<Icon className="fa fa-sort-desc" aria-hidden="true"/>}>
+                            <Typography>{"For Individual"}</Typography>
+                        </ExpansionPanelSummary>
+                        <ExpansionPanelSummary >
+                            {   
+                                 this.renderMultiCheck1()
+                                // this.renderMultiSelect(this.state.businessList1)
+                                /* <InputLabel id="demo-simple-select-label" style={{marginBottom:20}}>Select Services provided for individual</InputLabel><br /> */
+                            }
+                            {/* {
+                                (this.state.individualList && this.state.individualList.length) ? this.state.individualList.map((item, index)=> {
+                                    return <Chip label={item}
+                                                    style={{marginBottom: 10, marginRight:10}}
+                                                    onDelete={() => this.handleDelete(item)} 
+                                                    onClick={()=>this.handleClick()}
                                                     clickable
                                                     key={index}
                                                     avatar={<Avatar
-                                                        className="avatarRe">{item[0]}</Avatar>}
-                                                />
-                                            }) : <span>No serices found.</span>
-                                        }
-                                    </ExpansionPanelSummary>
-                                </ExpansionPanel>
+                                                    className="avatarRe">{item[0]}</Avatar>}
+                                     />
+                                }) : <span>No serices found.</span>
+                            } */}
+                        </ExpansionPanelSummary>
+                    </ExpansionPanel>
 
-                                <ExpansionPanel style={{ width: 800 }}>
-                                    <ExpansionPanelSummary expandIcon={<Icon className="fa fa-sort-desc" aria-hidden="true" />}>
-                                        <Typography>{"For business"}</Typography>
-                                    </ExpansionPanelSummary>
-                                    <ExpansionPanelSummary>
-                                        <div>
-                                            {
-                                                (this.state.individualList && this.state.businessList.length) ? this.state.businessList.map((item, index) => {
-                                                    return <Chip label={item}
-                                                        style={{ marginBottom: 10, marginRight: 10 }}
-                                                        onDelete={() => this.handleDelete(item)}
-                                                        onClick={() => this.handleClick()}
-                                                        clickable
-                                                        key={index}
-                                                        avatar={<Avatar
-                                                            className="avatarRe">{item[0]}</Avatar>}
-                                                    />
-                                                }) : <span>No serices found.</span>
-                                            }
-                                        </div>
-                                    </ExpansionPanelSummary>
-                                </ExpansionPanel>
-                            </Paper>
-                        </div>
-                    </div><br />
-                    <Button disabled={this.state.activeStep === 0} onClick={this.handleBack}
-                        style={{ marginRight: 30 }} variant="outlined"
+                    <ExpansionPanel style={{width:800}}>
+                        <ExpansionPanelSummary expandIcon={<Icon className="fa fa-sort-desc" aria-hidden="true"/>}>
+                            <Typography>{"For business"}</Typography>
+                        </ExpansionPanelSummary>
+                        <ExpansionPanelSummary>
+                            <div>
+                            {
+                                this.renderMultiCheck()
+                            /* <InputLabel id="demo-simple-select-label" style={{marginBottom:20}}>Select Services provided for Business</InputLabel> */
+                            }
+                            
+                            {
+                                // (this.state.individualList && this.state.businessList.length) ? this.state.businessList.map((item, index)=> {
+                                //     return <Chip label={item}
+                                //                     style={{marginBottom: 10, marginRight:10}}
+                                //                     onDelete={() => this.handleDelete(item)} 
+                                //                     onClick={()=>this.handleClick()}
+                                //                     clickable
+                                //                     key={index}
+                                //                     avatar={<Avatar
+                                //                     className="avatarRe">{item[0]}</Avatar>}
+                                //      />
+                                // }) : <span>No serices found.</span>
+                            }
+                            </div>
+                        </ExpansionPanelSummary>
+                    </ExpansionPanel>
+                </Paper>
+                </div>
+                </div><br/>
+                <Button disabled={this.state.activeStep === 0} onClick={this.handleBack} 
+                        style={{marginRight:30}} variant="outlined"
                     >Back</Button>
-                    <Button onClick={this.handleReset}
-                        variant="outlined"
-                        color="secondary"
-                        style={{ marginRight: 30 }}>Reset Form
+                    <Button onClick={this.handleReset} 
+                        variant="outlined" 
+                        color="secondary" 
+                        style={{marginRight:30}}>Reset Form
                     </Button>
-                    <Button onClick={this.createOrganization}
-                        variant="outlined"
+                    <Button onClick={this.createOrganization} 
+                        variant="outlined" 
                         color="primary">Create your Provider Account
                     </Button>
                 </Paper>
