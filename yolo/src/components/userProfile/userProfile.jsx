@@ -59,14 +59,19 @@ export default class UserProfile extends React.Component {
                 countries: store.getState().getCountries.countries
             })
         })
-        setTimeout(() => {
-            this.setState({
-                name: this.state.userDetails[0].name,
-                email: this.state.userDetails[0].email,
-                phone_number: this.state.userDetails[0].phone_number.slice(-10,),
-                countries_code:this.state.userDetails[0].phone_number.slice(0,-10),
-            })
-        }, 1000);
+        // if (history.location.pathname !== '/login' || '/register' ) {
+        //     setIsLoggedIn(true);
+        // }
+        if(localStorage.getItem('userProfile')==='false'){
+            setTimeout(() => {
+                this.setState({
+                    name: this.state.userDetails[0].name,
+                    email: this.state.userDetails[0].email,
+                    phone_number: this.state.userDetails[0].phone_number.slice(-10,),
+                    countries_code:this.state.userDetails[0].phone_number.slice(0,-10),
+                })
+            }, 1000);
+        }
     }
 
     handleClose = (event, reason) => {

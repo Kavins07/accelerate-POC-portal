@@ -251,7 +251,12 @@ export default function Header(props) {
             // }
         });
         if (localStorage.getItem('userProfile') === 'true') {
-            setName(store.getState().getUserDetails.success[0].name);
+            if(store.getState().getUserDetails.success.length>0){
+                setName(store.getState().getUserDetails.success[0].name);
+            }else{
+                localStorage.setItem('userProfile', true);
+                history.push('/dashboard');
+            }
         }
     }, []);
 
