@@ -26,6 +26,16 @@ import { makeStyles } from '@material-ui/core/styles';
 // import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+// import "cdn.syncfusion.com/ej2/ej2-base/styles/material.css";
+// import "cdn.syncfusion.com/ej2/ej2-inputs/styles/material.cs";
+// import "cdn.syncfusion.com/ej2/ej2-buttons/styles/material.css";
+// import "cdn.syncfusion.com/ej2/ej2-react-navigations/styles/material.css";
+import { Multiselect } from 'multiselect-react-dropdown';
+import { TreeViewComponent } from '@syncfusion/ej2-react-navigations';
+
+import { enableRipple } from '@syncfusion/ej2-base';
+enableRipple(true);
 
 //from ramids
 const nodes = [{
@@ -36,6 +46,8 @@ const nodes = [{
         { value: 'deimos', label: 'Deimos' },
     ],
 }];
+// import log from '../../utils/logger.service';
+// import { Multiselect } from 'multiselect-react-dropdown';
 
 
 export default class ProviderRegister extends React.Component {
@@ -48,7 +60,7 @@ export default class ProviderRegister extends React.Component {
             lastName: '',
             password: '',
             email: '',
-            countries: [],
+            // countries: [],
             businessList: ['Business Incorporation', 'GST Service', 'Startup Serices', 'Legal Complaince Service', 'Tax Returns', 'Goverment Registration', 'Trademark', 'Miscelleneous Services'],
             individualList: ['Tax returns', 'TDS', 'Legal', 'Miscelleneous Services'],
             businessList1: [
@@ -56,32 +68,234 @@ export default class ProviderRegister extends React.Component {
                 { value: 'strawberry', label: 'Strawberry' },
                 { value: 'vanilla', label: 'Vanilla' }
             ],
+            countries: [
+                { id: 1, name: 'Australia', hasChild: true, expanded: true },
+                { id: 2, pid: 1, name: 'New South Wales' },
+                { id: 3, pid: 1, name: 'Victoria' },
+                { id: 4, pid: 1, name: 'South Australia' },
+                { id: 6, pid: 1, name: 'Western Australia' },
+                { id: 7, name: 'Brazil', hasChild: true },
+                { id: 8, pid: 7, name: 'Paraná' },
+                { id: 9, pid: 7, name: 'Ceará' },
+                { id: 10, pid: 7, name: 'Acre' },
+                { id: 11, name: 'China', hasChild: true },
+                { id: 12, pid: 11, name: 'Guangzhou' },
+                { id: 13, pid: 11, name: 'Shanghai' },
+                { id: 14, pid: 11, name: 'Beijing' },
+                { id: 15, pid: 11, name: 'Shantou' },
+                { id: 16, name: 'France', hasChild: true },
+                { id: 17, pid: 16, name: 'Pays de la Loire' },
+                { id: 18, pid: 16, name: 'Aquitaine' },
+                { id: 19, pid: 16, name: 'Brittany' },
+                { id: 20, pid: 16, name: 'Lorraine' },
+                { id: 21, name: 'India', hasChild: true },
+                { id: 22, pid: 21, name: 'Assam' },
+                { id: 23, pid: 21, name: 'Bihar' },
+                { id: 24, pid: 21, name: 'Tamil Nadu' },
+                { id: 25, pid: 21, name: 'Punjab' }
+            ],
+
+            field: { dataSource: this.countries, id: 'id', parentID: 'pid', text: 'name', hasChildren: 'hasChild' },
             indNodes: [{
                 value: 'Individual',
                 label: 'Individual',
                 children: [
-                    {value: 'Tax returns', label: 'Tax returns'},
-                    { value: 'TDS', label: 'TDS'},
-                    { value: 'Legal', label: 'Legal' },
-                    {value: 'Miscelleneous Services', label: 'Miscelleneous Services'}
+                    {
+                        value: 'Tax returns', label: 'Tax returns', children: [{
+                            value: 'salaried Individuals',
+                            label: 'salaried Individuals',
+                        },
+                        {
+                            value: 'Capital Gains',
+                            label: 'Capital Gains',
+                        },
+                        {
+                            value: 'Tax notice management plan',
+                            label: 'Tax notice management plan',
+                        },
+                        {
+                            value: 'LTCG filing and advisory',
+                            label: 'LTCG filing and advisory',
+                        }
+
+                    ],
+                        
+                    },
+                    { value: 'TDS', label: 'TDS',children: [{
+                        value: 'Challan 26QB',
+                        label: 'Challan 26QB',
+                    }
+                  
+               
+                ] },
+                    { value: 'Legal', label: 'Legal' ,children: [{
+                        value: 'Document Review',
+                        label: 'Document Review',
+                    },
+                    {
+                        value: 'Legal Drafting',
+                        label: 'Legal Drafting'
+                    },
+                    {
+                        value:'Filing of Form DPT-3',
+                        label: 'Filing of Form DPT-3'
+                    }
+               
+                ]},
+                    { value: 'Miscelleneous Services', label: 'Miscelleneous Services',children: [{
+                        value: 'Advisory tax saving',
+                        label: 'Advisory tax saving',
+                    },
+                    {
+                       value:'Ask an expert',
+                       label:'Ask an expert'
+                    }
+                  
+               
+                ] }
                 ],
             }],
-        
+
             busNodes: [{
                 value: 'Business',
                 label: 'Business',
                 children: [
-                    {value: 'Business Incorporation', label: 'Business Incorporation',childern:[
-                        {value: 'A', label: 'A'},
-                        {value: 'B', label: 'B'}
-                    ]},
-                    { value: 'GST Service', label: 'GST Service'},
-                    { value: 'Startup Services', label: 'Startup Services'},
-                    { value: 'Legal Complaince Service', label: 'Legal Complaince Service'},
-                    { value: 'Tax Returns', label: 'Tax Returns' },
-                    { value: 'Goverment Registration', label: 'Goverment Registration'},
-                    { value: 'Trademark', label: 'Trademark'},
-                    { value: 'Miscelleneous Services', label: 'Miscelleneous Services'},
+                    {
+                        value: 'Business Incorporation', label: 'Business Incorporation', children: [{
+                            value: 'Private Limited Company',
+                            label: 'Private Limited Company',
+                        },
+                        {
+                            value: 'One person company',
+                            label: 'One person company',
+                        },
+                        {
+                            value: 'Limited Liability Partnership',
+                            label: 'Limited Liability Partnership',
+                        },
+                        {
+                            value: 'PLC registration',
+                            label: 'PLC registration',
+                        },
+                        {
+                            value: 'NGO section and company registration',
+                            label: 'NGO section and company registration',
+                        }
+
+                    ]
+                    },
+                    { value: 'GST Service', label: 'GST Service',children: [{
+                        value: 'GST registration',
+                        label: 'GST registration',
+                    },
+                    {
+                        value: 'GST filing',
+                        label: 'GST filing',
+                    },
+                    {
+                        value: 'Ask an expert',
+                        label: 'Ask an expert',
+                    },
+                    {
+                        value: 'E-way bill service',
+                        label: 'E-way bill service',
+                    },
+                    {
+                        value: 'GST notice-Ask an expert',
+                        label: 'GST notice-Ask an expert',
+                    }
+
+                ] },
+                    { value: 'Startup Services', label: 'Startup Services',children: [{
+                        value: 'Payroll Service',
+                        label: 'Payroll Service',
+                    },
+                    {
+                        value:'Launch Your Startup',
+                        label:'Launch Your Startup'
+                    },
+                    {
+                        value:'Start up India Registration',
+                        label:'Start up India Registration'
+                    },
+                    {
+                        value:'Winding up of company',
+                        label:'Winding up of company'
+                    },
+                    {
+                        value:'Company and LLP returns',
+                        label:'Company and LLP returns'
+                    }
+                  
+               
+                ] },
+                    { value: 'Legal Complaince Service', label: 'Legal Complaince Service',children: [{
+                        value: 'Change company name',
+                        label: 'Change company name',
+                    },
+                    {
+                        value:'Change registered office',
+                        label:'Change registered office'
+                    }
+                  
+               
+                ] },
+                    { value: 'Tax Returns', label: 'Tax Returns' ,children: [{
+                        value: 'TDS returns',
+                        label: 'TDS returns',
+                    },
+                    {
+                        value:'Business Tax returns',
+                        label:'Business Tax returns'
+                    }
+                  
+               
+                ]},
+                    { value: 'Goverment Registration', label: 'Goverment Registration',children: [{
+                        value: 'Provident Fund',
+                        label: 'Provident Fund',
+                    },
+                    {
+                        value:'PAN registration',
+                        label:'PAN registration'
+                    }
+                  
+               
+                ] },
+                    { value: 'Trademark', label: 'Trademark' ,children: [{
+                        value: 'Trademark registration',
+                        label: 'Trademark registration',
+                    },
+                    {
+                        value:'Trademark renewal',
+                        label:'Trademark renewal'
+                    },
+                    {
+                        value:'Trademark registration in India',
+                        label:'Trademark registration in India'
+                    }
+                  
+               
+                ]},
+                    { value: 'Miscelleneous Services', label: 'Miscelleneous Services',children: [{
+                        value: 'List Your Business on government website',
+                        label: 'List Your Business on government website',
+                    },
+                    {
+                        value:'LEI Code',
+                        label:'LEI Code'
+                    },
+                    {
+                        value:'15CA Form Filing',
+                        label:'15CA Form Filing'
+                    },
+                    {
+                        value:'Gettinng FDI in India',
+                        label:'Getting FDI in India'
+                    }
+                  
+               
+                ] },
                 ],
             }],
             perChecked: [],
@@ -331,9 +545,11 @@ export default class ProviderRegister extends React.Component {
         );
         store.subscribe(() => {
             if (store.getState().registerProvider.error) {
+                console.log(store.getState().registerProvider.error);
                 this.setState({ open: true });
                 this.setState({ errorMessage: store.getState().registerProvider.error })
             } else {
+                console.log(store.getState().registerProvider);
                 history.push('/provider/login');
             }
 
@@ -375,6 +591,18 @@ export default class ProviderRegister extends React.Component {
                 expanded={this.state.expanded}
                 onCheck={checked => this.setState({ checked })}
                 onExpand={expanded => this.setState({ expanded })}
+                icons={{
+                    check: <span className="rct-icon rct-icon-check" />,
+                    uncheck: <span className="rct-icon rct-icon-uncheck" />,
+                    halfCheck: <span className="rct-icon rct-icon-half-check" />,
+                    expandClose: <span className="rct-icon rct-icon-expand-close" />,
+                    expandOpen: <span className="rct-icon rct-icon-expand-open" />,
+                    expandAll: <span className="rct-icon rct-icon-expand-all" />,
+                    collapseAll: <span className="rct-icon rct-icon-collapse-all" />,
+                    parentClose: null,
+                    parentOpen: null,
+                    leaf: null,
+                }}
             />
         );
     }
@@ -386,6 +614,18 @@ export default class ProviderRegister extends React.Component {
                 expanded={this.state.expanded}
                 onCheck={checked => this.setState({ checked })}
                 onExpand={expanded => this.setState({ expanded })}
+                icons={{
+                    check: <span className="rct-icon rct-icon-check" />,
+                    uncheck: <span className="rct-icon rct-icon-uncheck" />,
+                    halfCheck: <span className="rct-icon rct-icon-half-check" />,
+                    expandClose: <span className="rct-icon rct-icon-expand-close" />,
+                    expandOpen: <span className="rct-icon rct-icon-expand-open" />,
+                    expandAll: <span className="rct-icon rct-icon-expand-all" />,
+                    collapseAll: <span className="rct-icon rct-icon-collapse-all" />,
+                    parentClose: null,
+                    parentOpen: null,
+                    leaf: null,
+                }}
             />
         );
     }

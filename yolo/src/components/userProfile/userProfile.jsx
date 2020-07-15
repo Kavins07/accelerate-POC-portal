@@ -158,9 +158,9 @@ export default class UserProfile extends React.Component {
     }
 
 
-    handleTabChange = (e) => {
-        console.log(e);
-    }
+    // handleTabChange = (e) => {
+    //     console.log(e);
+    // }
 
     handleAccessCode = (e)=> {
         // console.log( e.target.value);
