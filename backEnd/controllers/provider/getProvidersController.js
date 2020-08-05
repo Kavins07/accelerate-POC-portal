@@ -9,6 +9,7 @@ exports.getAllProvider = (req, res) => {
     provideModel.find({approved: true}, (err, providers)=> {
         if(err) {
             res.status(400).json(err);
+            console.log('out')
         } else {
             res.status(200).json(providers);
         }
