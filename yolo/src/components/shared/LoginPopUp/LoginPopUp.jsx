@@ -48,7 +48,7 @@ export default class LoginPopUp extends React.Component {
                 })
                 window.localStorage.setItem('userProfile', true);
                 window.location.reload(false);
-                history.push('/dashboard');
+                history.push('/');
             }
         })
     }

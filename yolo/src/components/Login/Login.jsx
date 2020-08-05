@@ -61,7 +61,11 @@ export default class Login extends React.Component {
                 });
                 window.localStorage.setItem('userProfile', true);
                 window.location.reload(false);
+<<<<<<< HEAD
                 history.push('/dashboard');
+=======
+                history.push('/');
+>>>>>>> 3e9e94b18f139fbef26d1aa3980e2e7e6d6950ad
             }
         })
     }

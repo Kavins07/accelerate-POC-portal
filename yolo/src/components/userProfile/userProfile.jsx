@@ -2,15 +2,10 @@ import React from 'react';
 import {
     Paper, Avatar, Icon,
     Container, Grid, Card, CardHeader, CardContent,
-    TextField, Select, MenuItem, CardActions, Link, Button,Snackbar
+    TextField, Select, MenuItem, CardActions, Link, Button, Snackbar
 } from '@material-ui/core';
 import { store } from '../../store';
 import AccountCircleTwoToneIcon from '@material-ui/icons/AccountCircleTwoTone';
-import InputGroup from 'react-bootstrap/InputGroup';
-import FormControl from 'react-bootstrap/FormControl';
-import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 
 export default class UserProfile extends React.Component {
     constructor(props) {
@@ -21,16 +16,16 @@ export default class UserProfile extends React.Component {
             countries: [],
             name: '',
             email: '',
-            photo:'',
+            photo: '',
             password: '',
             confirm_password: '',
             errorMessage: '',
-            countries_code:'',
+            countries_code: '',
             phone_number: '',
             disableName: true,
             disableEmail: true,
             disableNumber: true,
-            open:false,
+            open: false,
             errors: {
                 name: '',
                 email: '',
@@ -39,7 +34,7 @@ export default class UserProfile extends React.Component {
                 phone_number: '',
                 message: ''
             },
-            updateDetails:true
+            updateDetails: true
         }
     }
 
@@ -62,13 +57,13 @@ export default class UserProfile extends React.Component {
         // if (history.location.pathname !== '/login' || '/register' ) {
         //     setIsLoggedIn(true);
         // }
-        if(localStorage.getItem('userProfile')==='false'){
+        if (localStorage.getItem('userProfile') === 'false') {
             setTimeout(() => {
                 this.setState({
                     name: this.state.userDetails[0].name,
                     email: this.state.userDetails[0].email,
                     phone_number: this.state.userDetails[0].phone_number.slice(-10,),
-                    countries_code:this.state.userDetails[0].phone_number.slice(0,-10),
+                    countries_code: this.state.userDetails[0].phone_number.slice(0, -10),
                 })
             }, 1000);
         }
@@ -76,10 +71,10 @@ export default class UserProfile extends React.Component {
 
     handleClose = (event, reason) => {
         if (reason === 'clickaway') {
-          return;
+            return;
         }
-        
-        this.setState({open: false});
+
+        this.setState({ open: false });
         window.location.reload();
     };
 
@@ -125,36 +120,36 @@ export default class UserProfile extends React.Component {
     }
 
     //UI part is done need to work on put and 
-    updateProfile=(e)=>{
+    updateProfile = (e) => {
         e.preventDefault();
-        this.props.userUpdate( this.state.email, this.state.name,this.state.phone_number,this.state.country_code,this.state.photo );
-        store.subscribe(()=>{
-            if(store.getState().userUpdate.error) {
-                this.setState({open: true});
+        this.props.userUpdate(this.state.email, this.state.name, this.state.phone_number, this.state.country_code, this.state.photo);
+        store.subscribe(() => {
+            if (store.getState().userUpdate.error) {
+                this.setState({ open: true });
                 this.setState({
                     errorMessage: store.getState().userUpdate.error
                 })
-            } else{ 
+            } else {
                 // history.push('/');
                 // window.location.reload();
             }
         })
     }
 
-    handleUpdate =()=>{
+    handleUpdate = () => {
         // console.log('inside func')
-        if(this.state.disableName===false || this.state.disableEmail===false || this.state.disableNumber===false){
+        if (this.state.disableName === false || this.state.disableEmail === false || this.state.disableNumber === false) {
             // console.log('inside first ')
-            if(this.state.errors.name == "" && this.state.errors.email == "" && this.state.errors.phone_number == ""){
+            if (this.state.errors.name == "" && this.state.errors.email == "" && this.state.errors.phone_number == "") {
                 // console.log('inside third')
-                this.setState({updateDetails:false});
-            }else{
+                this.setState({ updateDetails: false });
+            } else {
 
-                this.setState({updateDetails:true});
+                this.setState({ updateDetails: true });
             }
         }
         // console.log(this.state.disableName);
-        
+
     }
 
 
@@ -162,9 +157,12 @@ export default class UserProfile extends React.Component {
     //     console.log(e);
     // }
 
-    handleAccessCode = (e)=> {
+    handleAccessCode = (e) => {
         // console.log( e.target.value);
-        this.setState({countries_code:e.target.value});
+        this.setState({ countries_code: e.target.value });
+    }
+    handleBack = () => {
+
     }
 
     render() {
@@ -175,131 +173,21 @@ export default class UserProfile extends React.Component {
                         !this.state.userDetails.length ? <div>Please wait
                         </div> :
                             <div>
-                                <div style={{ paddingTop: 150, height: '100%', width: '100%', position: 'absolute', top: 0, left: 0 }} className="rootCont">
+                                <div style={{ paddingTop: 200, height: '100%', width: '100%', position: 'absolute', top: 0, left: 0 }} className="rootCont">
                                     <Grid container>
-                                        <Grid item style={{ marginLeft: '25%' }}>
-                                            <Card style={{ minWidth: 800 }}>
-                                                <CardHeader title="Personal Information" >
+                                        <Grid item style={{ marginLeft: 300 }}>
+                                            <Card>
+                                                <CardHeader title="User Profile" >
+
                                                 </CardHeader>
                                                 <CardContent>
                                                     <AccountCircleTwoToneIcon
                                                         color="primary"
                                                         style={{ fontSize: 100 }}
                                                     />
-                                                    <Form onSubmit={(e)=>{this.updateProfile(e)}}>
-                                                    <Form.Group controlId="formGroupName">
-                                                        <Row>
-                                                            <Col md={1}>
-                                                                <Form.Label>Name</Form.Label>
-                                                            </Col>
-                                                        </Row>
-                                                        <Row className="show-grid">
-                                                            <Col md={10}>
-                                                                <Form.Control type="name"
-                                                                    placeholder="Enter Name"
-                                                                    name='name'
-                                                                    value={this.state.name}
-                                                                    disabled={this.state.disableName}
-                                                                    onChange={(e) => this.change(e)} />
-                                                            </Col>
-                                                            <Col md={2}>
-                                                                <Button color="secondary" onClick={() => { this.setState({ disableName: false })}}>Edit</Button>
-                                                            </Col>
-                                                        </Row>
-                                                        <Row>
-                                                            <Col className='text-danger'>
-                                                                <Form.Label>{this.state.errors.name}</Form.Label>
-                                                            </Col>
-                                                        </Row>
-                                                    </Form.Group>
-                                                    <Form.Group controlId="formGroupEmail">
-                                                        <Row>
-                                                            <Col md={1}>
-                                                                <Form.Label>Email</Form.Label>
-                                                            </Col>
-                                                        </Row>
-                                                        <Row className="show-grid">
-                                                            <Col md={10}>
-                                                                <Form.Control type="email"
-                                                                    placeholder="Enter email"
-                                                                    name='email'
-                                                                    value={this.state.email}
-                                                                    disabled={this.state.disableEmail}
-                                                                    onChange={(e) => this.change(e)} />
-                                                            </Col>
-                                                            <Col md={2}>
-                                                                <Button color="secondary" onClick={() => { this.setState({ disableEmail: false })}}>Edit</Button>
-                                                            </Col>
-                                                        </Row>
-                                                        <Row>
-                                                            <Col >
-                                                                <Form.Label className='text-danger'>{this.state.errors.email}</Form.Label>
-                                                            </Col>
-                                                        </Row>
-                                                    </Form.Group>
-                                                    <Form.Group controlId="formGroupPhoneNumber">
-                                                        <Row>
-                                                            <Col md={2}>
-                                                                <Form.Label>Phone number</Form.Label>
-                                                                {/* Phone Number */}
-                                                            </Col>
-                                                        </Row>
-                                                        <Row className="show-grid">
-                                                            <Col md={10}>
-                                                                <Row className="show-grid">
-                                                                    <Col md={2}>
-                                                                        <Form.Control as="select" custom
-                                                                         disabled={this.state.disableNumber}
-                                                                         value={this.state.countries_code}
-                                                                        onChange={this.handleAccessCode}
-                                                                        >
-                                                                            {
-                                                                                (this.state.countries && this.state.countries.length) ? this.state.countries.map((item, index) => {
-                                                                                    return <option key={index} value={item.dial_code} autoWidth={true}>{item.dial_code}</option>
-                                                                                }) : <span>Loading</span>
-                                                                            }
-                                                                        </Form.Control>
-                                                                        {/* <Select
-                                                                            labelId="demo-simple-select-label"
-                                                                            id="demo-simple-select"
-                                                                            value={this.state.country_code}
-                                                                            style={{ minWidth: 150 }}
-                                                                        >
-                                                                            {
-                                                                                (this.state.countries && this.state.countries.length) ? this.state.countries.map((item, index) => {
-                                                                                    return <MenuItem key={index} value={item.dial_code} autoWidth={true}>{item.dial_code}</MenuItem>
-                                                                                }) : <span>Loading</span>
-                                                                            }
-                                                                        </Select> */}
-                                                                    </Col>
-                                                                    <Col md={10}>
-                                                                        <Form.Control
-                                                                            type="number"
-                                                                            name='phone_number'
-                                                                            placeholder="Enter phone number"
-                                                                            value={this.state.phone_number}
-                                                                            disabled={this.state.disableNumber}
-                                                                            onChange={(e) => this.change(e)} />
-                                                                    </Col>
-                                                                </Row>
-                                                            </Col>
-                                                            <Col md={2}>
-                                                                <Button color="secondary" onClick={() => { this.setState({ disableNumber: false }) }}>Edit</Button>
-                                                            </Col>
-                                                        </Row>
-                                                        <Row>
-                                                            <Col >
-                                                                <Form.Control.Feedback tooltip>Looks good!</Form.Control.Feedback>
-                                                                <Form.Label className='text-danger'>{this.state.errors.phone_number}</Form.Label>
-                                                            </Col>
-                                                        </Row>
-                                                    </Form.Group>
-                                                    <br/>
-                                                    <Button variant="contained" type="submit" color="primary" disabled={this.state.updateDetails} >Update</Button>
-                                                    </Form>
-
-                                                    {/* <form noValidate autoCapitalize="off"> */}
-                                                        {/* <TextField
+                                                    {/* <Avatar style={{marginLeft:400}}>{this.state.userDetails[0].name}</Avatar> */}
+                                                    <form noValidate autoCapitalize="off">
+                                                        <TextField
                                                             id="name"
                                                             label="Enter your Name"
                                                             name="name"
@@ -308,8 +196,8 @@ export default class UserProfile extends React.Component {
                                                             autoFocus
                                                             required
                                                             value={this.state.userDetails[0].name}
-                                                        /> */}
-                                                        {/* <TextField
+                                                        />
+                                                        <TextField
                                                             id="email"
                                                             label="Enter your email"
                                                             name="email"
@@ -318,8 +206,8 @@ export default class UserProfile extends React.Component {
                                                             value={this.state.userDetails[0].email}
                                                             autoFocus
                                                             required
-                                                        /> */}
-                                                        {/* <Grid item xs={4} style={{ display: 'flex' }}>
+                                                        />
+                                                        <Grid item xs={4} style={{ display: 'flex' }}>
                                                             <Select
                                                                 labelId="demo-simple-select-label"
                                                                 id="demo-simple-select"
@@ -343,10 +231,10 @@ export default class UserProfile extends React.Component {
                                                                 required
                                                                 style={{ minWidth: 800 }}
                                                             />
-                                                        </Grid> */}
-                                                        {/* <br /> */}
-                                                        
-                                                    {/* </form> */}
+                                                        </Grid>
+                                                        <br />
+                                                        <Button variant="contained" type="submit" color="primary">Update</Button>
+                                                    </form>
                                                 </CardContent>
                                             </Card>
                                         </Grid>
@@ -362,14 +250,14 @@ export default class UserProfile extends React.Component {
                     }}
                     open={this.state.open}
                     autoHideDuration={5000}
-                    onClose={(e,r)=>this.handleClose(e,r)}
+                    onClose={(e, r) => this.handleClose(e, r)}
                     message={this.state.errorMessage}
                     action={
-                    <React.Fragment>
-                        <Button color="secondary" size="small" onClick={(e,r)=>this.handleClose(e,r)}>
-                            Hide
+                        <React.Fragment>
+                            <Button color="secondary" size="small" onClick={(e, r) => this.handleClose(e, r)}>
+                                Hide
                         </Button>
-                    </React.Fragment>
+                        </React.Fragment>
                     }
                 />
             </div>

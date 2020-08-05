@@ -23,11 +23,8 @@ import MuiDialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import Input from '@material-ui/core/Input';
 import Chip from '@material-ui/core/Chip';
-import AccountCircleTwoToneIcon from '@material-ui/icons/AccountCircleTwoTone'
-import Grow from '@material-ui/core/Grow';
-import MenuList from '@material-ui/core/MenuList';
-
-
+import AccountCircleTwoToneIcon from '@material-ui/icons/AccountCircleTwoTone';
+import Menu from '@material-ui/core/Menu';
 
 
 
@@ -42,6 +39,7 @@ export default function Header(props) {
     const [errorMessage, setErrorMessage] = useState("");
     const [openPopper, setOpenPopper] = useState(false);
     const [countriesList, setCountriesList] = useState([]);
+    const [userDetails,setuserDetails]=useState([]);
     const [selectedCountry, setSelectedCountry] = useState("India");
     const [selectedSearchItem, setselectedSearchItem] = useState("All");
     const [businessTypes, setBusinessTypes] = useState([]);
@@ -50,8 +48,7 @@ export default function Header(props) {
     const [selectedFinancialType, setselectedFinancialType] = useState(["Banking"]);
     const [openProfile, setopenProfile] = useState(false);
     const [anchorMenuEl, setAnchorMenuEl] = React.useState(null);
-    const [userName, setuserDetails] = useState([]);
-
+    
 
     const styles = (theme) => ({
         root: {
@@ -65,37 +62,6 @@ export default function Header(props) {
             color: theme.palette.grey[500],
         },
     });
-
-    const menuClasses = makeStyles((theme) => ({
-        root: {
-            display: 'flex',
-        },
-        paper: {
-            marginRight: theme.spacing(2),
-        },
-    }));
-
-    const [openProfilemenu, setopenProfilemenu] = React.useState(false);
-    const anchorMenuRef = React.useRef(null);
-
-    const handleMenuToggle = () => {
-        setopenProfilemenu((prevOpen) => !prevOpen);
-    };
-
-    const handleMenuClose = (event) => {
-        if (anchorMenuRef.current && anchorMenuRef.current.contains(event.target)) {
-            return;
-        }
-        setopenProfilemenu(false);
-    };
-
-    const handleListKeyDown = (event) => {
-        if (event.key === 'Tab') {
-            event.preventDefault();
-            setopenProfilemenu(false);
-        }
-    }
-
     const useMultiStyles = makeStyles((theme) => ({
         formControl: {
             margin: theme.spacing(1),
@@ -149,7 +115,17 @@ export default function Header(props) {
         window.location.reload(false);
     }
 
-   
+    // const handleBussinessChangeMultiple = (event) => {
+    //     const { options } = event.target;
+    //     const value = [];
+    //     for (let i = 0, l = options.length; i < l; i += 1) {
+    //         if (options[i].selected) {
+    //             value.push(options[i].value);
+    //         }
+
+    //     }
+    //     setSelectedBusinessType(value);
+    // }
     const handleFinanceChange = (event) => {
         setselectedFinancialType(event.target.value);
         store.dispatch({
@@ -158,7 +134,21 @@ export default function Header(props) {
         })
     };
 
-    
+    // const handleFinanceChangeMultiple = (event) => {
+    //     const { options } = event.target;
+    //     const value = [];
+    //     for (let i = 0, l = options.length; i < l; i += 1) {
+    //         if (options[i].selected) {
+    //             value.push(options[i].value);
+    //         }
+    //         setselectedFinancialType(value);
+    //     }
+    //     store.dispatch({
+    //         type: FILTER_BY_BUSINESS_SERVICES,
+    //         payload: value
+    //     })
+
+    // }
 
 
     const DialogTitle = withStyles(styles)((props) => {
@@ -215,17 +205,10 @@ export default function Header(props) {
             setCountriesList(store.getState().getCountries.countries);
             setBusinessTypes(store.getState().getBusinessTypes.success);
             setFinancialTypes(store.getState().getFinancialService.success);
-            
         });
-        if (localStorage.getItem('userProfile') === 'true') {
-            if(store.getState().getUserDetails.success.length>0){
-                setName(store.getState().getUserDetails.success[0].name);
-            }else{
-                localStorage.setItem('userProfile', true);
-                history.push('/dashboard');
-            }
-        }
     }, []);
+
+
 
     const navigateToRegister = () => {
         history.push('/register');
@@ -274,7 +257,7 @@ export default function Header(props) {
             )
         }
         if (history.location.pathname === '/login') {
-            return <Button className={[classes.margin, classes.btnColorWhite]}>Sign Up</Button>
+            return <Button variant="contained" className={classes.margin}>Sign Up</Button>
         }
         return null;
     }
@@ -308,8 +291,8 @@ export default function Header(props) {
         if (history.location.pathname === '/') {
             return (
                 <div style={{ display: 'inline' }}>
-                    <Button
-                        className={[classes.margin, classes.btnColorWhite]}
+                    <Button variant="contained"
+                        className={classes.margin}
                         onClick={handleClosed}>Login
                     </Button>
                     <LoginPopUpContainer />
@@ -320,8 +303,8 @@ export default function Header(props) {
         if (history.location.pathname === '/register') {
             return (
                 <div style={{ display: 'inline' }}>
-                    <Button
-                        className={[classes.margin, classes.btnColorWhite]}
+                    <Button variant="contained"
+                        className={classes.margin}
                         onClick={() => { navigatetoLogin() }}>Login
                  </Button>
                     <LoginPopUpContainer />
@@ -370,7 +353,6 @@ export default function Header(props) {
 
     const handleProfile = () => {
         if (localStorage.getItem('userProfile')) {
-            localStorage.setItem('userProfile', false);
             history.push('/dashboard');
         }
         if (localStorage.getItem('providerProfile')) {
@@ -518,40 +500,28 @@ export default function Header(props) {
                     {
                         openProfile ?
                             <div>
-                                <div className={menuClasses.root}>
-                                    <div>
-                                        <Button
-                                            ref={anchorMenuRef}
-                                            aria-controls={openProfilemenu ? 'menu-list-grow' : undefined}
-                                            aria-haspopup="true"
-                                            className={[classes.margin, classes.btnColorWhite]}
-                                            onClick={handleMenuToggle}
-                                        >
-                                            {name}
-                                            <p> &nbsp; &nbsp; </p>
-                                            <AccountCircleTwoToneIcon
-                                                style={{ fontSize: 30 }}
-                                            />
-                                        </Button>
-                                        <Popper open={openProfilemenu} anchorEl={anchorMenuRef.current} role={undefined} transition disablePortal>
-                                            {({ TransitionProps, placement }) => (
-                                                <Grow
-                                                    {...TransitionProps}
-                                                    style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
-                                                >
-                                                    <Paper>
-                                                        <ClickAwayListener onClickAway={handleMenuClose}>
-                                                            <MenuList autoFocusItem={openProfilemenu} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                                                                <MenuItem onClick={handleProfile}>My account</MenuItem>
-                                                                <MenuItem onClick={logout}>Logout</MenuItem>
-                                                            </MenuList>
-                                                        </ClickAwayListener>
-                                                    </Paper>
-                                                </Grow>
-                                            )}
-                                        </Popper>
-                                    </div>
-                                </div>
+                                {/* <Button className={[classes.margin, classes.btnColorWhite]} onClick={handleProfile}>
+                                    <AccountCircleTwoToneIcon
+                                        style={{ fontSize: 30 }}
+                                    />
+                                </Button> */}
+                                <Button className={[classes.margin, classes.btnColorWhite]} aria-controls="simple-menu" aria-haspopup="true" onClick={handlemenuClick}>
+                                    <AccountCircleTwoToneIcon
+                                        style={{ fontSize: 30 }}
+                                    />
+                                </Button>
+                                <Menu
+                                    id="simple-menu"
+                                    anchorEl={anchorMenuEl}
+                                    keepMounted
+                                    open={Boolean(anchorMenuEl)}
+                                    onClose={handlemenuClose}
+                                >
+                                    <MenuItem onClick={handleProfile}>Profile</MenuItem>
+        
+                                    <MenuItem onClick={logout}>Logout</MenuItem>
+                                    
+                                </Menu>
                             </div> : null
                     }
                     <Popper open={openPopper} placement={"bottom"} transition anchorEl={anchorE} style={{ marginTop: 20, width: "300px" }}>

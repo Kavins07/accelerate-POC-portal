@@ -3,10 +3,14 @@
   "version": "0.2.2",
   "private": true,
   "dependencies": {
+<<<<<<< HEAD
     "@fortawesome/fontawesome-svg-core": "^1.2.29",
     "@fortawesome/free-solid-svg-icons": "^5.13.1",
     "@fortawesome/react-fontawesome": "^0.1.11",
     "@material-ui/core": "^4.11.0",
+=======
+    "@material-ui/core": "^4.10.1",
+>>>>>>> 3e9e94b18f139fbef26d1aa3980e2e7e6d6950ad
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@material/snackbar": "^7.0.0",
@@ -25,9 +29,14 @@
     "multiselect-react-dropdown": "^1.5.7",
     "popper.js": "^1.16.1",
     "react": "^16.13.1",
+<<<<<<< HEAD
     "react-bootstrap": "^1.2.2",
     "react-bootstrap-validation": "^0.1.11",
     "react-checkbox-tree": "^1.6.0",
+=======
+    "react-bootstrap": "^1.0.1",
+    "react-bootstrap-dropdown": "^0.3.0",
+>>>>>>> 3e9e94b18f139fbef26d1aa3980e2e7e6d6950ad
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
