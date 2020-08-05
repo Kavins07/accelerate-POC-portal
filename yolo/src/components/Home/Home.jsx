@@ -39,7 +39,9 @@ export default class Home extends React.Component {
             } else {
                 this.setState({
                     providerData: store.getState().getAllApprovedProvider.success
+                   
                 })
+                console.log(store.getState().getAllApprovedProvider.success)
             }
         })
     }
